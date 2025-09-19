@@ -16,7 +16,7 @@ export default function Home() {
         />
         <ol>
           <li>
-            It's a PWA template!
+            It&apos;s a PWA template!
           </li>
         </ol>
 

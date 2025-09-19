@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#111827" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
       </head>
-      <body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AuthProvider>
           <PWARegister />
           {children}

@@ -7,7 +7,7 @@ async function signIn(provider: 'google' | 'facebook') {
   const prov = provider === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
   try {
     await signInWithPopup(auth, prov);
-  } catch (e) {
+  } catch {
     // Popups can fail in installed PWAs/iOS; fallback to redirect
     await signInWithRedirect(auth, prov);
   }
