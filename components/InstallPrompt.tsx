@@ -40,7 +40,7 @@ export default function InstallPrompt() {
     console.log('deferred', deferred);
 
     if (isiOS) return <p>To install: open in Safari → Share → Add to Home Screen</p>;
-    if (isInApp && !deferred) return <p>Open in Chrome to install (menu → Open in browser)</p>;
+    if (isInApp) return <p>Open in Chrome to install (menu → Open in browser)</p>;
     if (!deferred) {
         // Covers Telegram/other in‑app browsers where no prompt exists
         if (isInApp) return <p>Open in your browser (⋮/… → Open in browser) to install</p>;
