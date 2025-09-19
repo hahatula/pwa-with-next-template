@@ -35,10 +35,18 @@ export default function InstallPrompt() {
     const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
     const isiOS = /iphone|ipad|ipod/i.test(ua);
     const isInApp = /(FBAN|FBAV|Instagram|Line|MicroMessenger|WeChat|Snapchat|Twitter|Telegram|Pinterest)/i.test(ua);
+    console.log('isiOS', isiOS);
+    console.log('isInApp', isInApp);
+    console.log('deferred', deferred);
 
     if (isiOS) return <p>To install: open in Safari → Share → Add to Home Screen</p>;
     if (isInApp && !deferred) return <p>Open in Chrome to install (menu → Open in browser)</p>;
-    if (!deferred) return null;
+    if (!deferred) {
+        // Covers Telegram/other in‑app browsers where no prompt exists
+        if (isInApp) return <p>Open in your browser (⋮/… → Open in browser) to install</p>;
+        // Mobile browser but prompt not ready yet
+        return null;
+      }
 
     return <button onClick={async () => { await deferred.prompt(); setDeferred(null); }}>Install app</button>;
 }
