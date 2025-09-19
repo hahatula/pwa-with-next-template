@@ -2,6 +2,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+// narrowed type of the beforeinstallprompt event
 type BIP = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }> };
 type UADataNavigator = Navigator & { userAgentData?: { mobile?: boolean } };
 
@@ -13,7 +14,9 @@ export default function InstallPrompt() {
     useEffect(() => {
         const nav = navigator as UADataNavigator;
         const ua = nav.userAgent || '';
-        const mobile = /android|iphone|ipad|ipod|windows phone/i.test(ua) || nav.userAgentData?.mobile === true;
+        const mobileUA = /Android|iPhone|iPad|iPod|Windows Phone|Mobi/i.test(ua);
+        const mobileHeuristic = (navigator.maxTouchPoints || 0) > 0 && Math.max(window.screen.width, window.screen.height) <= 1366;
+        const mobile = nav.userAgentData?.mobile === true || mobileUA || mobileHeuristic;
         setIsMobile(Boolean(mobile));
 
         const onBIP = (e: Event) => { e.preventDefault(); setDeferred(e as BIP); };
@@ -29,9 +32,13 @@ export default function InstallPrompt() {
     if (!isMobile) return null;
     if (installed || (typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches)) return null;
 
-    const isiOS = typeof navigator !== 'undefined' && /iphone|ipad|ipod/i.test(navigator.userAgent);
-    if (isiOS) return <p>To install: Share → Add to Home Screen</p>;
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+    const isiOS = /iphone|ipad|ipod/i.test(ua);
+    const isInApp = /(FBAN|FBAV|Instagram|Line|MicroMessenger|WeChat|Snapchat|Twitter|Telegram|Pinterest)/i.test(ua);
 
+    if (isiOS) return <p>To install: open in Safari → Share → Add to Home Screen</p>;
+    if (isInApp && !deferred) return <p>Open in Chrome to install (menu → Open in browser)</p>;
     if (!deferred) return null;
+
     return <button onClick={async () => { await deferred.prompt(); setDeferred(null); }}>Install app</button>;
 }
