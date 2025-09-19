@@ -1,5 +1,5 @@
 import { getBrowserMessaging } from './client';
-import { getToken, onMessage } from 'firebase/messaging';
+import { getToken, onMessage, MessagePayload } from 'firebase/messaging';
 
 export async function ensureFCMToken(): Promise<string | null> {
   const messaging = await getBrowserMessaging();
@@ -9,7 +9,7 @@ export async function ensureFCMToken(): Promise<string | null> {
   return getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FCM_VAPID_KEY });
 }
 
-export async function listenForeground(handler: (payload: any) => void) {
+export async function listenForeground(handler: (payload: MessagePayload) => void) {
   const messaging = await getBrowserMessaging();
   if (!messaging) return () => {};
   return onMessage(messaging, handler);

@@ -17,7 +17,7 @@ export default function LoginPage() {
             router.replace('/account');
         }
     }, [user, router]);
-    
+
     useEffect(() => {
         getRedirectResult(auth).catch(()=>{console.log('no redirect result')});
     }, []);
@@ -27,8 +27,8 @@ export default function LoginPage() {
         setErr(null);
         try {
             await signInWithEmailAndPassword(auth, email, password);
-        } catch (e: any) {
-            setErr(e.message);
+        } catch (e: unknown) {
+            setErr(e instanceof Error ? e.message : String(e));
         }
     };
 
