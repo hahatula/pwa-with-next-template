@@ -1,13 +1,17 @@
-// app/api/cron/daily/route.ts
+export const runtime = 'nodejs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const key = req.headers.get('x-cron-key');
-  if (process.env.CRON_SECRET && key !== process.env.CRON_SECRET) {
+  const isVercelCron = req.headers.get('x-vercel-cron') === '1';
+  const key = req.headers.get('x-cron-key') || new URL(req.url).searchParams.get('key');
+
+  if (process.env.CRON_SECRET) {
+    if (!(isVercelCron || key === process.env.CRON_SECRET)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+  } else if (!isVercelCron) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  // TODO: run daily job (e.g., aggregate reports)
+
   return NextResponse.json({ ok: true, ran: 'daily', at: new Date().toISOString() });
 }
-
-export const runtime = 'nodejs';
