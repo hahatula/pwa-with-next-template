@@ -30,7 +30,6 @@ export default function InstallPrompt() {
     }, []);
 
     if (!isMobile) return null;
-    if (installed) return <p>installed</p>;
     if (installed || (typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches)) return null;
 
     const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
@@ -46,7 +45,7 @@ export default function InstallPrompt() {
         // Covers Telegram/other in‑app browsers where no prompt exists
         if (isInApp) return <p>Open in your browser (⋮/… → Open in browser) to install</p>;
         // Mobile browser but prompt not ready yet
-        return null;
+        return <p>Mobile browser but prompt not ready yet</p>;
       }
 
     return <button onClick={async () => { await deferred.prompt(); setDeferred(null); }}>Install app</button>;
