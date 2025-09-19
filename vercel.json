@@ -1,0 +1,18 @@
+{
+    "crons": [
+        {
+            "path": "/api/cron/daily",
+            "schedule": "0 8 * * *",
+            "headers": {
+                "x-cron-key": "@cron_secret"
+            }
+        },
+        {
+            "path": "/api/cron/monthly",
+            "schedule": "0 9 1 * *",
+            "headers": {
+                "x-cron-key": "@cron_secret"
+            }
+        }
+    ]
+}
