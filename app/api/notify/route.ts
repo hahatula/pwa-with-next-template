@@ -6,13 +6,13 @@ export async function POST(req: NextRequest) {
 
     if (!token) return NextResponse.json({ error: 'Missing token' }, { status: 400 });
 
+    const origin = process.env.APP_URL || req.nextUrl.origin;
+
     try {
         const id = await adminMessaging.send({
             token,
             notification: { title, body },
-            webpush: {
-                fcmOptions: { link: process.env.APP_URL ?? 'https://example.com' }
-            }
+            webpush: { fcmOptions: { link: origin } }
         });
         return NextResponse.json({ id });
     } catch (e: any) {
