@@ -10,6 +10,7 @@ export default function InstallPrompt() {
     const [deferred, setDeferred] = useState<BIP | null>(null);
     const [installed, setInstalled] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [noPromptHint, setNoPromptHint] = useState(false); // timeout fallback
 
     useEffect(() => {
         const nav = navigator as UADataNavigator;
@@ -23,9 +24,14 @@ export default function InstallPrompt() {
         const onInstalled = () => setInstalled(true);
         window.addEventListener('beforeinstallprompt', onBIP);
         window.addEventListener('appinstalled', onInstalled);
+
+        // if no prompt arrives within 2s, show guidance (covers Telegram/FB/etc.)
+        const t = window.setTimeout(() => setNoPromptHint(true), 2000);
+
         return () => {
             window.removeEventListener('beforeinstallprompt', onBIP);
             window.removeEventListener('appinstalled', onInstalled);
+            window.clearTimeout(t);
         };
     }, []);
 
@@ -34,19 +40,10 @@ export default function InstallPrompt() {
 
     const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
     const isiOS = /iphone|ipad|ipod/i.test(ua);
-    const isInApp = /(FBAN|FBAV|Instagram|Line|MicroMessenger|WeChat|Snapchat|Twitter|Telegram|Pinterest)/i.test(ua);
-    console.log('isiOS', isiOS);
-    console.log('isInApp', isInApp);
-    console.log('deferred', deferred);
 
     if (isiOS) return <p>To install: open in Safari → Share → Add to Home Screen</p>;
-    if (isInApp && !deferred) return <p>Open in Chrome to install (menu → Open in browser)</p>;
-    if (!deferred) {
-        // Covers Telegram/other in‑app browsers where no prompt exists
-        if (isInApp) return <p>Open in your browser (⋮/… → Open in browser) to install</p>;
-        // Mobile browser but prompt not ready yet
-        return <p>Mobile browser but prompt not ready yet</p>;
-      }
+    if (!deferred && noPromptHint) return <p>Open in your browser (⋮/… → Open in browser) to install</p>;
+    if (!deferred) return null;
 
     return <button onClick={async () => { await deferred.prompt(); setDeferred(null); }}>Install app</button>;
 }
