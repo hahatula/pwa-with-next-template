@@ -29,7 +29,8 @@ export default function InstallPrompt() {
         };
     }, []);
 
-    if (!isMobile) return <p>Not mobile</p>;
+    if (!isMobile) return null;
+    if (installed) return <p>installed</p>;
     if (installed || (typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches)) return null;
 
     const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
