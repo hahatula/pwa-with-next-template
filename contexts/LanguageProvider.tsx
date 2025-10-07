@@ -26,7 +26,7 @@ const LanguageContext = createContext<LanguageContextType>({
     toggleLanguage: async () => { },
 });
 
-const LOCAL_STORAGE_KEY = 'pitbull.lang';
+const LOCAL_STORAGE_KEY = 'app.lang';
 
 function getDirection(lang: AppLanguage): 'ltr' | 'rtl' {
     return lang === 'he' ? 'rtl' : 'ltr';

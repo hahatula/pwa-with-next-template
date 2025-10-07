@@ -1,10 +1,10 @@
 "use client";
 
-import styles from "./PitButton.module.css";
+import styles from "./AppButton.module.css";
 import Link from "next/link";
 import React from "react";
 
-type PitButtonCommonProps = {
+type AppButtonCommonProps = {
     children: React.ReactNode;
     variant?: "primary" | "secondary" | "gradient";
     disabled?: boolean;
@@ -12,14 +12,14 @@ type PitButtonCommonProps = {
     fullWidth?: boolean;
 };
 
-type PitButtonAsButtonProps = PitButtonCommonProps &
+type AppButtonAsButtonProps = AppButtonCommonProps &
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "className" | "disabled"> & {
         href?: undefined;
         type?: "button" | "submit" | "reset";
         onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     };
 
-type PitButtonAsLinkProps = PitButtonCommonProps &
+type AppButtonAsLinkProps = AppButtonCommonProps &
     Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className"> & {
         href: string;
         prefetch?: boolean;
@@ -27,16 +27,16 @@ type PitButtonAsLinkProps = PitButtonCommonProps &
         scroll?: boolean;
     };
 
-export type PitButtonProps = PitButtonAsButtonProps | PitButtonAsLinkProps;
+export type AppButtonProps = AppButtonAsButtonProps | AppButtonAsLinkProps;
 
-export default function PitButton(props: PitButtonProps) {
+export default function AppButton(props: AppButtonProps) {
     const {
         children,
         variant = "primary",
         disabled = false,
         className,
         ...rest
-    } = props as PitButtonProps & { [key: string]: unknown };
+    } = props as AppButtonProps & { [key: string]: unknown };
 
     const computedClassName = [
         styles.pitButton,
@@ -55,7 +55,7 @@ export default function PitButton(props: PitButtonProps) {
             scroll,
             onClick,
             ...anchorRest
-        } = props as PitButtonAsLinkProps;
+        } = props as AppButtonAsLinkProps;
 
         if (disabled) {
             return (
@@ -90,7 +90,7 @@ export default function PitButton(props: PitButtonProps) {
         );
     }
 
-    const { type = "button", onClick, ...buttonRest } = rest as PitButtonAsButtonProps;
+    const { type = "button", onClick, ...buttonRest } = rest as AppButtonAsButtonProps;
 
     return (
         <button

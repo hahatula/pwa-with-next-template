@@ -1,15 +1,19 @@
-# Pitbull BJJ Schedule App 🥋
+# Progressive Web App Template
 
-A Progressive Web App (PWA) designed for Pitbull BJJ students and instructors.  
+PWA designed as a bootstrap for creating apps.  
 The app helps manage training schedules, sign-ups, and attendance, with support for both Hebrew and English.
 
 ## Features
 
-- 📅 **Training Schedule** – browse the full class calendar.  
-- 📝 **Easy Sign-up** – reserve a spot or cancel participation.  
-- 👥 **Community View** – see who else is attending.  
-- 🔐 **Secure Accounts** – Firebase-based authentication with admin roles.  
-- 🖥️ **Cross-platform** – works in browsers and as an installable mobile PWA.
+- PWA: preconfigured manifest, service worker (`public/sw.js`), auto registration, install prompt hook
+- Auth & Roles: Firebase Auth, admin roles, route guards (`RequireAuth`, `RequireAdmin`)
+- Firestore: ready-to-use client utilities and examples
+- Push Notifications (FCM): token management, foreground handler, SW (`public/firebase-messaging-sw.js`)
+- i18n: English/Hebrew, language provider and gate, sample translations
+- API Routes: notifications, user preferred language, scheduled jobs (`/api/cron/daily`, `/api/cron/monthly`)
+- Vercel Cron: schedules in `vercel.json` with optional `CRON_SECRET` protection
+- Ready Pages: auth (`/(auth)/login`, `/(auth)/register`), `account`, `admin`, `schedule`, home
+- Tooling: Next.js App Router + TypeScript, ESLint, PWA registration component
 
 ## Tech Stack
 

@@ -5,10 +5,10 @@ import { auth } from '@/lib/firebase/client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthProvider';
-import PitButton from '@/components/PitButton';
+import AppButton from '@/components/AppButton';
+import AppInput from '@/components/AppInput';
 import Header from '@/components/Header';
 import { useI18n } from "@/lib/i18n";
-import PitInput from '@/components/PitInput';
 import Link from "next/link";
 import SocialLogin from '@/components/SocialLogin';
 
@@ -47,9 +47,9 @@ export default function RegisterPage() {
         <div className={styles.formWrapper}>
           <h1>{tCommon('signup')}</h1>
           <form onSubmit={onSubmit} className={styles.form}>
-            <PitInput name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <PitInput name="password" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <PitButton type="submit" variant="secondary">{tCommon('createAccount')}</PitButton>
+            <AppInput name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <AppInput name="password" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <AppButton type="submit" variant="secondary">{tCommon('createAccount')}</AppButton>
             {err && <p style={{ color: 'fff' }}>{err}</p>}
           </form>
           <SocialLogin />

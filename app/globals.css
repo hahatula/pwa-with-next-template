@@ -1,9 +1,9 @@
 :root {
   --background: #171717;
   --foreground: #ffffff;
-  --pitbull: #ff681a;
-  --pitbull-red: #FF391A;
-  --pitbull-gradient: linear-gradient(145deg, rgba(255, 104, 26, 0.8), rgba(255, 57, 26, 0.8));
+  --accent: #ff681a;
+  --accent-red: #FF391A;
+  --accent-gradient: linear-gradient(145deg, rgba(255, 104, 26, 0.8), rgba(255, 57, 26, 0.8));
 }
 
 @media (prefers-color-scheme: dark) {

@@ -13,7 +13,7 @@ type LoaderProps = {
 //Fullscreen center: <Loader center="screen" />
 //Custom size/color: <Loader size={10} color="#fff" />
 
-export default function Loader({ size = 8, color = 'var(--pitbull)', center = false, className }: LoaderProps) {
+export default function Loader({ size = 8, color = 'var(--accent)', center = false, className }: LoaderProps) {
     const style = { ['--dot-size' as unknown as string]: `${size}px`, color } as React.CSSProperties;
 
     const wrapperClassName = [

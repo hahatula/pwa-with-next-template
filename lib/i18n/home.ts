@@ -1,11 +1,11 @@
 const home = {
     title: {
-        en: 'Pitbull team\ntraining schedule',
-        he: 'לוח אימונים\nקבוצת פיטבול'
+        en: 'Template',
+        he: 'תבנית'
     },
     description: {
-        en: "Roy Nieman's BJJ Club",
-        he: 'מועדון ג’יו ג’יטסו ברזילאי של רועי נימן'
+        en: "Template description",
+        he: 'תיאור תבנית'
     },
     installPrompt: {
         en: "We recommend installing the app on your home screen for easy access",

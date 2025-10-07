@@ -42,7 +42,7 @@
 }
 
 .heading {
-  color: var(--pitbull);
+  color: var(--accent);
 }
 
 .description {
@@ -58,30 +58,6 @@
   align-self: self-end;
 }
 
-.logoWrap {
-  width: 120svw;
-  aspect-ratio: 1 / 1;
-  max-width: 480px;
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  transform: rotate(45deg) translateX(-30%);
-  bottom: -70px;
-  border: 8px solid var(--foreground);
-  border-radius: 50%;
-}
-
-.logoWrap.second {
-  bottom: 150px;
-  transform: rotate(-27deg) translateX(48%);
-  width: 100svw;
-  opacity: 0.6;
-}
-
-.logo {
-  object-fit: contain;
-}
-
 .ctasWrapper {
   width: 100%;
   flex-shrink: 0;
@@ -90,7 +66,7 @@
   gap: 10px;
   text-align: center;
   padding: 20px;
-  background: var(--pitbull-gradient);
+  background: var(--accent-gradient);
   border-radius: 24px 24px 0 0;
   box-shadow: 0px -4px 10px 5px rgba(0, 0, 0, 0.4);
 }

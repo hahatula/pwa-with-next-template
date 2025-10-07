@@ -2,10 +2,10 @@
 'use client';
 import { auth } from '@/lib/firebase/client';
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, signInWithRedirect } from 'firebase/auth';
-import PitButton from './PitButton';
+import AppButton from './AppButton';
 import { useI18n } from '@/lib/i18n';
 
-async function signIn(provider: 'google' | 'facebook') { 
+async function signIn(provider: 'google' | 'facebook') {
   const prov = provider === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
   try {
     await signInWithPopup(auth, prov);
@@ -19,7 +19,7 @@ export default function SocialLogin() {
   const { t: tAuth } = useI18n('auth');
   return (
     <div>
-      <PitButton onClick={() => signIn('google')} variant="secondary">{tAuth('withGoogle')}</PitButton>
+      <AppButton onClick={() => signIn('google')} variant="secondary">{tAuth('withGoogle')}</AppButton>
     </div>
   );
 }

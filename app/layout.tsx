@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Pitbull BJJ Team',
-  description: 'Pitbull BJJ Team',
+  title: 'Template',
+  description: 'Template',
   themeColor: '#ff681a'
 };
 

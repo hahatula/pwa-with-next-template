@@ -1,6 +1,6 @@
 {
-    "name": "Pitbull BJJ Team Schedule",
-    "short_name": "Pitbull BJJ Schedule",
+    "name": "Template",
+    "short_name": "Template",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",
@@ -10,7 +10,7 @@
     "capture_links": "existing-client-navigate",
     "background_color": "#171717",
     "theme_color": "#ff681a",
-    "description": "Pitbull BJJ Team Schedule App",
+    "description": "Template App",
     "icons": [
         {
             "src": "/icons/icon-48x48.png",

@@ -1,8 +1,7 @@
 "use client";
-import Image from "next/image";
 import styles from "./page.module.css";
 import InstallPrompt from "@/components/InstallPrompt";
-import PitButton from "@/components/PitButton";
+import AppButton from "@/components/AppButton";
 import { useInstallPrompt } from '@/components/InstallPrompt/useInstallPrompt';
 import Header from "@/components/Header";
 import useIsHydrated from "@/hooks/useIsHydrated";
@@ -15,7 +14,7 @@ export default function Home() {
   if (user) {
     return redirect('/schedule');
   }
-  
+
   const { hasInstallUI } = useInstallPrompt();
   const hydrated = useIsHydrated();
   const showInstallUI = hydrated ? hasInstallUI : true;
@@ -29,27 +28,6 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <div className={`${styles.logoWrap} ${styles.second}`}>
-        <Image
-          className={styles.logo}
-          src="/logo.png"
-          alt="Pitbull BJJ Team logo"
-          fill
-          priority
-          sizes="100vw"
-        />
-      </div>
-      <div className={styles.logoWrap}>
-        <Image
-          className={styles.logo}
-          src="/logo.png"
-          alt="Pitbull BJJ Team logo"
-          fill
-          priority
-          sizes="100vw"
-        />
-      </div>
-
       <Header />
       <main className={styles.main}>
         <>
@@ -69,8 +47,8 @@ export default function Home() {
             <div className={styles.ctasWrapper}>
               <InstallPrompt />
               <div className={ctasClassName}>
-                <PitButton variant="secondary" href="/register">{tCommon('signup')}</PitButton>
-                <PitButton variant={showInstallUI ? "secondary" : "primary"} href="/login">{tCommon('login')}</PitButton>
+                <AppButton variant="secondary" href="/register">{tCommon('signup')}</AppButton>
+                <AppButton variant={showInstallUI ? "secondary" : "primary"} href="/login">{tCommon('login')}</AppButton>
               </div>
             </div>
           </div>

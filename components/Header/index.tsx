@@ -1,4 +1,4 @@
-import PitButton from "../PitButton";
+import AppButton from "../AppButton";
 import styles from "./Header.module.css";
 import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageProvider";
@@ -14,7 +14,7 @@ export default function Header() {
     return (
         <header className={styles.header}>
             <div className={styles.headerLeft}>
-                <PitButton variant="gradient" onClick={() => { toggleLanguage(); }}>{nextLabel}</PitButton>
+                <AppButton variant="gradient" onClick={() => { toggleLanguage(); }}>{nextLabel}</AppButton>
                 <a className={styles.address} href="https://maps.app.goo.gl/rAmVwWSrMZuPG7mG6" target="_blank">
                     {t('address').split('\n').map((line, i) => (
                         <span key={i}>
@@ -24,9 +24,9 @@ export default function Header() {
                     ))}
                 </a>
             </div>
-            {user && <PitButton variant="gradient" onClick={() => {
+            {user && <AppButton variant="gradient" onClick={() => {
                 console.log('menu clicked');
-            }}><Image src="/menu.svg" alt="Menu" width={20} height={20} /></PitButton>}
+            }}><Image src="/menu.svg" alt="Menu" width={20} height={20} /></AppButton>}
         </header>
     );
 }

@@ -1,7 +1,6 @@
-// components/InstallPrompt.tsx
 'use client';
 import styles from './InstallPrompt.module.css';
-import PitButton from '@/components/PitButton';
+import AppButton from '@/components/AppButton';
 import { useInstallPrompt } from './useInstallPrompt';
 import { useI18n } from '@/lib/i18n';
 
@@ -15,7 +14,7 @@ export default function InstallPrompt() {
     if (isiOS) return (<>
         <p>{tHome('installPrompt')}</p>
         <p className={styles.installPrompt}>{tHome('installInstructionIOS')}</p>
-    </>);   
+    </>);
     if (!deferred && noPromptHint) return (<>
         <p>{tHome('installPrompt')}</p>
         <p className={styles.installPrompt}>{tHome('installInstructionInAppBrowser')}</p>
@@ -25,6 +24,6 @@ export default function InstallPrompt() {
     return (
         <>
             <p>{tHome('installPrompt')}</p>
-            <PitButton onClick={requestInstall ?? undefined}>{tHome('installButton')}</PitButton>
+            <AppButton onClick={requestInstall ?? undefined}>{tHome('installButton')}</AppButton>
         </>);
 }
