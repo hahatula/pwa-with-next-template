@@ -19,7 +19,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Template',
   description: 'Template',
-  themeColor: '#ff681a'
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
