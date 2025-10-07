@@ -1,97 +1,81 @@
+"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
 import InstallPrompt from "@/components/InstallPrompt";
+import PitButton from "@/components/PitButton";
+import { useInstallPrompt } from '@/components/InstallPrompt/useInstallPrompt';
+import Header from "@/components/Header";
+import useIsHydrated from "@/hooks/useIsHydrated";
+import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/contexts/AuthProvider";
+import { redirect } from "next/navigation";
 
 export default function Home() {
+  const { user } = useAuth();
+  if (user) {
+    return redirect('/schedule');
+  }
+  
+  const { hasInstallUI } = useInstallPrompt();
+  const hydrated = useIsHydrated();
+  const showInstallUI = hydrated ? hasInstallUI : true;
+  const { t: tHome } = useI18n('home');
+  const { t: tCommon } = useI18n('common');
+
+  const ctasClassName = [
+    styles.ctas,
+    !hasInstallUI && styles.noInstallPrompt,
+  ].filter(Boolean).join(" ");
+
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
+      <div className={`${styles.logoWrap} ${styles.second}`}>
         <Image
           className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+          src="/logo.png"
+          alt="Pitbull BJJ Team logo"
+          fill
           priority
+          sizes="100vw"
         />
-        <ol>
-          <li>
-            It&apos;s a PWA template!
-          </li>
-        </ol>
+      </div>
+      <div className={styles.logoWrap}>
+        <Image
+          className={styles.logo}
+          src="/logo.png"
+          alt="Pitbull BJJ Team logo"
+          fill
+          priority
+          sizes="100vw"
+        />
+      </div>
 
-        <InstallPrompt />
+      <Header />
+      <main className={styles.main}>
+        <>
+          <div className={styles.title}>
+            <h1 className={styles.heading}>
+              {tHome('title').split('\n').map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i === 0 && <br />}
+                </span>
+              ))}
+            </h1>
+            <p className={styles.description}>{tHome('description')}</p>
+          </div>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
+          <div className={styles.bottomSection}>
+            <div className={styles.ctasWrapper}>
+              <InstallPrompt />
+              <div className={ctasClassName}>
+                <PitButton variant="secondary" href="/register">{tCommon('signup')}</PitButton>
+                <PitButton variant={showInstallUI ? "secondary" : "primary"} href="/login">{tCommon('login')}</PitButton>
+              </div>
+            </div>
+          </div>
+        </>
       </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
