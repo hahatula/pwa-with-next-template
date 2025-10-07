@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { ensureFCMToken, listenForeground } from '@/lib/firebase/push';
+import AppButton from './AppButton';
 
 export default function EnablePush() {
     const [token, setToken] = useState<string | null>(null);
@@ -32,11 +33,11 @@ export default function EnablePush() {
     return (
         <section>
             <h2>Push Notifications</h2>
-            <button onClick={enable}>Enable Notifications</button>
+            <AppButton onClick={enable}>Enable Notifications</AppButton>
             {token && (
                 <>
                     <p style={{ fontSize: 12, wordBreak: 'break-all' }}>Token: {token}</p>
-                    <button onClick={sendTest}>Send Test Notification</button>
+                    <AppButton onClick={sendTest}>Send Test Notification</AppButton>
                 </>
             )}
             {status && <p>{status}</p>}

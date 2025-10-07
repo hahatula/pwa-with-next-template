@@ -1,6 +1,9 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #171717;
+  --foreground: #ffffff;
+  --accent: #ff681a;
+  --accent-red: #FF391A;
+  --accent-gradient: linear-gradient(145deg, rgba(255, 104, 26, 0.8), rgba(255, 57, 26, 0.8));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,6 +17,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  transition: all 0.2s ease-in-out;
 }
 
 body {
@@ -35,8 +39,24 @@ a {
   text-decoration: none;
 }
 
+.link {
+  text-decoration: underline;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+}
+
+/* Right-align text when Hebrew language is active without switching layout direction */
+body.lang-he {
+  text-align: right;
+}
+
+/* Preserve center-aligned elements as-is */
+body.lang-he [style*="text-align: center"],
+body.lang-he .text-center,
+body.lang-he [data-align="center"] {
+  text-align: center !important;
 }

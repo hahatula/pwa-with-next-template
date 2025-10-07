@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from '@/components/AuthProvider';
-import PWARegister from '@/components/PWARegister';
+import { AuthProvider } from '@/contexts/AuthProvider';
+import { LanguageProvider } from '@/contexts/LanguageProvider';
+import PWARegister from '@/components/system/PWARegister';
+import LanguageGate from "@/components/guards/LanguageGate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'PWA Template',
-  description: 'Next.js + Firebase PWA template',
-  themeColor: '#111827'
+  title: 'Template',
+  description: 'Template',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -25,13 +26,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.webmanifest" />
-        <meta name="theme-color" content="#111827" />
+        <meta name="theme-color" content="#ff681a" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AuthProvider>
-          <PWARegister />
-          {children}
+          <LanguageProvider>
+            <LanguageGate>
+              <PWARegister />
+              {children}
+            </LanguageGate>
+          </LanguageProvider>
         </AuthProvider>
       </body>
     </html>

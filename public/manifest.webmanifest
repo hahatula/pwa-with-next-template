@@ -1,6 +1,6 @@
 {
-    "name": "PWA Template",
-    "short_name": "PWA",
+    "name": "Template",
+    "short_name": "Template",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",
@@ -8,9 +8,9 @@
         "client_mode": "focus-existing"
     },
     "capture_links": "existing-client-navigate",
-    "background_color": "#ffffff",
-    "theme_color": "#111827",
-    "description": "Next.js + Firebase PWA template",
+    "background_color": "#171717",
+    "theme_color": "#ff681a",
+    "description": "Template App",
     "icons": [
         {
             "src": "/icons/icon-48x48.png",
