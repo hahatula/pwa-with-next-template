@@ -1,4 +1,4 @@
-import type { ClassLevel, ClassType } from '@/lib/values/dropdowns';
+import type { ClassLevel, ClassType } from "@/lib/types";
 import type { ClassesKeys } from '@/lib/i18n/classes';
 import { levelKey, typeKey } from '@/lib/values/dropdowns';
 import AdvancedIcon from '@/components/icons/level/Advansed';

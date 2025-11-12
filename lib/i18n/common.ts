@@ -47,6 +47,14 @@ const common = {
         en: 'Shabbat Shalom',
         he: 'שבת שלום'
     },
+    enable: {
+        en: 'Enable',
+        he: 'הפעל'
+    },
+    disable: {
+        en: 'Disable',
+        he: 'השבת'
+    },
 } as const;
 
 export type CommonKeys = keyof typeof common;

@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase/admin';
+import type { ClassLevel, ClassType } from '@/lib/types';
 
 type LocalizedText = { en: string; he: string };
-type ClassLevel = 'Kids' | 'Beginner' | 'All Levels' | 'Advanced';
-type ClassType = 'Gi' | 'No-Gi' | 'Open Mat' | 'MMA';
 
 type ClassInput = {
     title: LocalizedText;
@@ -41,7 +40,7 @@ async function requireAdmin(req: NextRequest) {
     return { uid, actor } as const;
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     try {
         const snap = await adminDb.collection('classes').get();
         const items = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Record<string, unknown>) }));

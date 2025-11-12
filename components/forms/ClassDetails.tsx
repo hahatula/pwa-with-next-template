@@ -1,15 +1,15 @@
 import styles from './forms.module.css';
 import { useState } from "react";
-import { ClassLevel, ClassType } from "@/app/admin/classes/page";
 import AppButton from "../AppButton";
 import AppInput from "../AppInput";
 import { levels, types, levelKey, typeKey, weekdays, weekdayKey } from "@/lib/values/dropdowns";
 import { useI18n } from "@/lib/i18n";
+import type { ClassLevel, ClassType, ClassFormData } from "@/lib/types";
 
 type ClassFormProps = {
     initial: Partial<ReturnType<typeof createEmptyClass>> | null;
     onCancel: () => void;
-    onSubmit: (values: Omit<ReturnType<typeof createEmptyClass>, 'id' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>) => void;
+    onSubmit: (values: ClassFormData) => void;
 };
 
 function getTodayLocalDateString() {
@@ -80,7 +80,7 @@ export default function ClassDetailsForm({ initial, onCancel, onSubmit }: ClassF
             startTime: form.startTime,
             endTime: form.endTime,
         } as const;
-        onSubmit(toSave as any);
+        onSubmit(toSave);
     }
 
     return (
@@ -144,7 +144,7 @@ export default function ClassDetailsForm({ initial, onCancel, onSubmit }: ClassF
                             style={{ width: '100%', marginTop: 4 }}
                         >
                             {levels.map((lvl) => (
-                                <option key={lvl} value={lvl}>{tClasses(levelKey[lvl] as any)}</option>
+                                <option key={lvl} value={lvl}>{tClasses(levelKey[lvl])}</option>
                             ))}
                         </AppInput>
                     </label>
@@ -157,7 +157,7 @@ export default function ClassDetailsForm({ initial, onCancel, onSubmit }: ClassF
                             style={{ width: '100%', marginTop: 4 }}
                         >
                             {types.map((t) => (
-                                <option key={t} value={t}>{tClasses(typeKey[t] as any)}</option>
+                                <option key={t} value={t}>{tClasses(typeKey[t])}</option>
                             ))}
                         </AppInput>
                     </label>
@@ -201,7 +201,7 @@ export default function ClassDetailsForm({ initial, onCancel, onSubmit }: ClassF
                                     style={{ width: '100%', marginTop: 4 }}
                                 >
                                     {weekdays.map((w, i) => (
-                                        <option key={w} value={i}>{tWeek(weekdayKey[w as keyof typeof weekdayKey] as any)}</option>
+                                        <option key={w} value={i}>{tWeek(weekdayKey[w as keyof typeof weekdayKey])}</option>
                                     ))}
                                 </AppInput>
                             </label>

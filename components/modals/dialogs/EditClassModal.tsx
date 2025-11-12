@@ -3,17 +3,17 @@
 import * as React from 'react';
 import ClassDetailsForm from '../../forms/ClassDetails';
 import { useI18n } from "@/lib/i18n";
+import type { ClassFormData } from '@/lib/types';
 
 type EditClassModalProps = {
     classId: string;
-    initial?: any;
-    onSubmit?: (values: any, existingId?: string) => void;
+    initial?: Partial<ClassFormData>;
+    onSubmit?: (values: ClassFormData, existingId?: string) => void;
     onClose: () => void;
 };
 
 export default function EditClassModal({ classId, initial, onSubmit, onClose }: EditClassModalProps) {
     const { t: tClasses } = useI18n('classes');
-    const { t: tCommon } = useI18n('common');
     
     return (
         <div>

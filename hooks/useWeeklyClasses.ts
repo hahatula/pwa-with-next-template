@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from 'react';
-import type { ClassDoc } from '@/app/admin/classes/page';
+import type { ClassDoc } from '@/lib/types';
 import { useAuth } from '@/contexts/AuthProvider';
 import { toYmd } from '@/lib/utils/date';
 

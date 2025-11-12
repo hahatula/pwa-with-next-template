@@ -1,6 +1,4 @@
-export type ClassLevel = 'Kids' | 'Beginner' | 'All Levels' | 'Advanced' | 'Master' | 'Women';
-export type ClassType = 'Gi' | 'No-Gi' | 'Open Mat' | 'MMA' | 'Functional';
-
+import type { ClassLevel, ClassType} from '@/lib/types';
 
 // Keys to use with t('classes') namespace so we can show localized labels
 import type { ClassesKeys } from '@/lib/i18n/classes';

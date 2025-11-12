@@ -5,6 +5,7 @@ import * as Select from '@radix-ui/react-select';
 import styles from './AppInput.module.css';
 import AppDatePicker from './AppDatePicker';
 import AppTimePicker from './AppTimePicker';
+import type { ReactChildProps } from '@/lib/types';
 
 type AppInputChangeEvent = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>;
 
@@ -30,6 +31,7 @@ export default function AppInput(props: AppInputProps) {
         ...rest
     } = props;
 
+    const [show, setShow] = React.useState(false);
     const isSelect = type === 'select' || (!!children && !type);
 
     function cx(...parts: Array<string | undefined | false>) {
@@ -42,7 +44,7 @@ export default function AppInput(props: AppInputProps) {
         const options = optionNodes
             .map((child) => {
                 if (!React.isValidElement(child)) return null;
-                const props = child.props as any;
+                const props = child.props as ReactChildProps;
                 const value = props?.value ?? '';
                 const disabled = !!props?.disabled;
                 const label = props?.children ?? String(value);
@@ -60,9 +62,9 @@ export default function AppInput(props: AppInputProps) {
         };
 
         const value = selectProps.value != null ? String(selectProps.value) : undefined;
-        const defaultValue = selectProps.defaultValue != null ? String(selectProps.defaultValue as any) : undefined;
+        const defaultValue = selectProps.defaultValue != null ? String(selectProps.defaultValue) : undefined;
 
-        const placeholder = (rest as any)?.placeholder as string | undefined;
+        const placeholder = rest?.placeholder;
         return (
             <div className={cx(styles.selectWrapper, containerClassName)}>
                 <Select.Root
@@ -173,7 +175,6 @@ export default function AppInput(props: AppInputProps) {
 
     const inputProps = rest as React.InputHTMLAttributes<HTMLInputElement>;
     const isPassword = type === 'password';
-    const [show, setShow] = React.useState(false);
     const effectiveType = isPassword && showPasswordToggle ? (show ? 'text' : 'password') : type;
 
     return (

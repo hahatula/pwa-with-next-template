@@ -1,11 +1,13 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import styles from './MyUpcomingClasses.module.css';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthProvider';
 import RequireAuth from '@/components/guards/RequireAuth';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageProvider';
 import AppButton from '@/components/AppButton';
+import { useI18n } from '@/lib/i18n';
 
 type UpcomingItem = {
     classId: string;
@@ -36,6 +38,8 @@ function toReadable(dateStr: string, locale: string) {
 }
 
 function MyClassesInner() {
+    const { t: tAccount } = useI18n('account');
+    const { t: tSchedule } = useI18n('schedule');
     const { user } = useAuth();
     const { lang } = useLanguage();
     const locale = lang === 'he' ? 'he-IL' : 'en-US';
@@ -63,28 +67,33 @@ function MyClassesInner() {
     }, [user]);
 
     return (
-        <main className='innerPageMain'>
-            <h1>My upcoming classes</h1>
-            {loading && <p>Loading...</p>}
-            {!loading && items && items.length === 0 && <p>No upcoming classes</p>}
-            {!loading && items && items.length > 0 && (
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                    {items.map((it) => (
-                        <li key={`${it.classId}_${it.date}`}>
-                            <Link href={`/schedule/${it.classId}?date=${it.date}`}>
-                                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                                    <div style={{ minWidth: 120 }}>{toReadable(it.date, locale)}</div>
-                                    <div style={{ minWidth: 120 }}>{it.classSnapshot?.startTime} - {it.classSnapshot?.endTime}</div>
-                                    <div>{lang === 'he' ? it.classSnapshot?.title?.he : it.classSnapshot?.title?.en}</div>
-                                </div>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            )}
-            <AppButton href="/account">Back to account</AppButton>
-            <AppButton href="/schedule">Back to schedule</AppButton>
-        </main>
+        <>
+
+            <main className='innerPageMain'>
+                <h1>{tAccount('myUpcomingClasses')}</h1>
+                {loading && <p>Loading...</p>}
+                {!loading && items && items.length === 0 && <p>No upcoming classes</p>}
+                {!loading && items && items.length > 0 && (
+                    <ul className={styles.upcomingClassesList}>
+                        {items.map((it) => (
+                            <li key={`${it.classId}_${it.date}`} className={styles.upcomingClassItem}>
+                                <Link href={`/schedule/${it.classId}?date=${it.date}`}>
+                                    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                                        <div>{toReadable(it.date, locale)}</div>
+                                        <div>{it.classSnapshot?.startTime} - {it.classSnapshot?.endTime}</div>
+                                        <div>{lang === 'he' ? it.classSnapshot?.title?.he : it.classSnapshot?.title?.en}</div>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </main>
+            <footer className={styles.ctasWrapper}>
+                <AppButton href="/account">{tAccount('myAccount')}</AppButton>
+                <AppButton href="/schedule">{tSchedule('schedule')}</AppButton>
+            </footer>
+        </>
     );
 }
 

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase/admin';
+import type { ClassSnapshot, RegistrationDoc, FirestoreDocData } from '@/lib/types';
+import { getBilingualText } from '@/lib/utils/helpers';
 
 type Registration = {
     classId: string;
@@ -113,22 +115,18 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
         }
         // Snapshot class details at registration time to keep reports stable
         const classSnap = await adminDb.collection('classes').doc(id).get();
-        const cls = (classSnap.data() as Record<string, unknown> | undefined) || {};
-        const classSnapshot: Registration['classSnapshot'] = {
-            title: {
-                en: (cls as any)?.title?.['en'] ?? '',
-                he: (cls as any)?.title?.['he'] ?? '',
-            },
-            coach: {
-                en: (cls as any)?.coach?.['en'] ?? '',
-                he: (cls as any)?.coach?.['he'] ?? '',
-            },
-            startTime: ((cls as any)?.startTime ?? '') as string,
-            endTime: ((cls as any)?.endTime ?? '') as string,
-            ...(typeof (cls as any)?.level !== 'undefined' ? { level: String((cls as any).level) } : {}),
-            ...(typeof (cls as any)?.type !== 'undefined' ? { type: String((cls as any).type) } : {}),
+        const cls = (classSnap.data() as FirestoreDocData | undefined) || {};
+
+        const classSnapshot: ClassSnapshot = {
+            title: getBilingualText(cls.title),
+            coach: getBilingualText(cls.coach),
+            startTime: (cls.startTime as string | undefined) ?? '',
+            endTime: (cls.endTime as string | undefined) ?? '',
+            ...(typeof cls.level !== 'undefined' ? { level: String(cls.level) } : {}),
+            ...(typeof cls.type !== 'undefined' ? { type: String(cls.type) } : {}),
         };
-        const record: Registration = {
+
+        const record: RegistrationDoc = {
             classId: id,
             date: body.date!,
             uid: targetUid,
@@ -140,10 +138,11 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
             confirmedAttendance: false,
             classSnapshot,
         };
+
         // Drop undefined fields to satisfy Firestore constraints
-        const sanitized: Partial<Registration> = Object.fromEntries(
+        const sanitized = Object.fromEntries(
             Object.entries(record).filter(([, v]) => v !== undefined)
-        ) as Partial<Registration>;
+        ) as Partial<RegistrationDoc>;
         await ref.set(sanitized);
         // Optional: trigger recompute hooks could be added here if needed
         return NextResponse.json({ ok: true });

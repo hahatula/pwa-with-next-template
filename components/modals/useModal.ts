@@ -1,15 +1,29 @@
 "use client";
 
 import * as React from 'react';
+import type { ClassFormData } from '@/lib/types';
 
 export type ModalId = 'confirm' | 'editClass';
 
 export type ModalRegistry = {
-    confirm: { title: string; description?: string; confirmText?: string; cancelText?: string; onConfirm?: () => void };
-    editClass: { classId: string; initial?: any; onSubmit?: (values: any, id?: string) => void };
+    confirm: {
+        title: string;
+        description?: string;
+        confirmText?: string;
+        cancelText?: string;
+        onConfirm?: () => void;
+    };
+    editClass: {
+        classId: string;
+        initial?: Partial<ClassFormData>;
+        onSubmit?: (values: ClassFormData, id?: string) => void;
+    };
 };
 
-type ActiveModal = { id: ModalId; props: any } | null;
+type ActiveModal<K extends ModalId = ModalId> = { 
+    id: K; 
+    props: ModalRegistry[K] 
+} | null;
 
 export const ModalContext = React.createContext<{
     openModal: <K extends ModalId>(args: { id: K; props: ModalRegistry[K] }) => void;

@@ -1,21 +1,16 @@
 import { adminDb } from '@/lib/firebase/admin';
+import type { ClassSnapshot, RegistrationDoc, FirestoreDocData } from '@/lib/types';
+import { getBilingualText } from '@/lib/utils/helpers';
 
-type ClassSnapshot = {
-    title: { en: string; he: string };
-    coach: { en: string; he: string };
-    startTime: string;
-    endTime: string;
-    level?: string;
-    type?: string;
-};
-
-type RegistrationDoc = {
-    classId: string;
+type DailyReportData = {
     date: string;
-    uid: string;
-    name?: string;
-    confirmedAttendance?: boolean;
-    classSnapshot?: ClassSnapshot;
+    items: Array<{
+        classId: string;
+        classSnapshot: ClassSnapshot;
+        count: number;
+        registrations: Array<{ uid: string; name?: string; confirmedAttendance?: boolean }>;
+    }>;
+    generatedAt?: Date;
 };
 
 export async function computeDailyReport(date: string) {
@@ -27,14 +22,14 @@ export async function computeDailyReport(date: string) {
     const occurringClassIds = new Set<string>();
     uniqueSnap.docs.forEach((d) => occurringClassIds.add(d.id));
     repeatedSnap.docs.forEach((d) => {
-        const data = d.data() as any;
-        if (!data.startDate || data.startDate <= ymd) occurringClassIds.add(d.id);
+        const data = d.data() as FirestoreDocData;
+        if (!data.startDate || (data.startDate as string) <= ymd) occurringClassIds.add(d.id);
     });
 
-    // 1.5) Load existing daily report to reuse snapshots on recompute
+    // 1.1) Load existing daily report to reuse snapshots on recompute
     const existingDailySnap = await adminDb.collection('reportsDaily').doc(date).get();
     const existingItems: Array<{ classId: string; classSnapshot: ClassSnapshot }> = existingDailySnap.exists
-        ? (((existingDailySnap.data() as any)?.items as Array<any>) || []).map((it) => ({ classId: it.classId, classSnapshot: it.classSnapshot }))
+        ? ((existingDailySnap.data() as DailyReportData)?.items || []).map((it) => ({ classId: it.classId, classSnapshot: it.classSnapshot }))
         : [];
     const existingSnapshotsByClassId: Record<string, ClassSnapshot> = {};
     existingItems.forEach((it) => { existingSnapshotsByClassId[it.classId] = it.classSnapshot; });
@@ -57,22 +52,22 @@ export async function computeDailyReport(date: string) {
     const classDocs = await Promise.all(
         classIds.map(async (id) => {
             const snap = await adminDb.collection('classes').doc(id).get();
-            return { id, data: snap.exists ? (snap.data() as any) : null };
+            return { id, data: snap.exists ? (snap.data() as FirestoreDocData) : null };
         })
     );
 
     const items = classIds.map((id) => {
         const regs = byClass[id] || [];
         // Prefer snapshot stored on any registration for immutability
-        const snapshotFromReg = (regs.find((r: any) => r.classSnapshot)?.classSnapshot as ClassSnapshot | undefined);
+        const snapshotFromReg = regs.find((r) => r.classSnapshot)?.classSnapshot;
         const cls = classDocs.find((c) => c.id === id)?.data || {};
         const fallbackSnapshot: ClassSnapshot = {
-            title: cls.title || { en: '', he: '' },
-            coach: cls.coach || { en: '', he: '' },
-            startTime: cls.startTime || '',
-            endTime: cls.endTime || '',
-            level: cls.level,
-            type: cls.type,
+            title: getBilingualText(cls.title),
+            coach: getBilingualText(cls.coach),
+            startTime: (cls.startTime as string | undefined) || '',
+            endTime: (cls.endTime as string | undefined) || '',
+            level: cls.level as string | undefined,
+            type: cls.type as string | undefined,
         };
         const snapshot = snapshotFromReg || existingSnapshotsByClassId[id] || fallbackSnapshot;
         const count = regs.length;
@@ -89,11 +84,6 @@ export async function writeDailyReport(report: Awaited<ReturnType<typeof compute
     await ref.set(report);
 }
 
-function monthFromDate(date: string): string {
-    // YYYY-MM-DD -> YYYY-MM
-    return date.slice(0, 7);
-}
-
 export async function computeMonthlyReport(month: string) {
     // Aggregate from daily reports to preserve snapshots
     const start = `${month}-01`;
@@ -106,7 +96,7 @@ export async function computeMonthlyReport(month: string) {
     const days: Array<{ date: string; classes: Array<{ classId: string; classSnapshot: ClassSnapshot; registrationsCount: number; confirmedAttendanceCount: number }> }> = [];
 
     dailySnap.docs
-        .map((d) => d.data() as any)
+        .map((d) => d.data() as DailyReportData)
         .sort((a, b) => String(a.date).localeCompare(String(b.date)))
         .forEach((day) => {
             const classes = (day.items || []) as Array<{ classId: string; classSnapshot: ClassSnapshot; count: number; registrations: Array<{ confirmedAttendance?: boolean }> }>;

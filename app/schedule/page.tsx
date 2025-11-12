@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Day from '@/components/Day';
 import { useState } from 'react';
 import AppButton from '@/components/AppButton';
-import type { ClassDoc } from '@/app/admin/classes/page';
+import type { ClassDoc } from '@/lib/types';
 import useWeeklyClasses from '@/hooks/useWeeklyClasses';
 import { toYmd } from '@/lib/utils/date';
 import Loader from '@/components/Loader';
