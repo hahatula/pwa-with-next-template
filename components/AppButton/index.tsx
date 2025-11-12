@@ -6,7 +6,7 @@ import React from "react";
 
 type AppButtonCommonProps = {
     children: React.ReactNode;
-    variant?: "primary" | "secondary" | "gradient";
+    variant?: "primary" | "secondary" | "gradient" | "activeTab" | "inactiveTab" | "ghost";
     disabled?: boolean;
     className?: string;
     fullWidth?: boolean;
@@ -39,7 +39,7 @@ export default function AppButton(props: AppButtonProps) {
     } = props as AppButtonProps & { [key: string]: unknown };
 
     const computedClassName = [
-        styles.pitButton,
+        styles.appButton,
         styles[variant],
         disabled && styles.isDisabled,
         className

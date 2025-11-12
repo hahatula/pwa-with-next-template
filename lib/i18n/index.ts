@@ -5,15 +5,22 @@ import header from './header';
 import home from './home';
 import common from './common';
 import auth from './auth';
+import classes from './classes';
+import week from './week';
+import schedule from './schedule';
+import account from './account';
 
 type SideBySide = Record<string, { en: string; he?: string }>;
 
 const MODULES: Record<Namespace, SideBySide> = {
+    classes,
     common,
     header,
     home,
     auth,
-    schedule: {},
+    week,
+    schedule,
+    account,
     notifications: {},
 };
 

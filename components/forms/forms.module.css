@@ -1,0 +1,33 @@
+.form {
+    border: 1px solid var(--foreground);
+    border-radius: 12px;
+    padding: 24px 16px;
+    background: var(--underlay);
+}
+
+.formActions {
+    display: flex;
+    gap: 8px;
+    margin-top: 30px;
+}
+
+/* class details form specific styles */
+.classDetailsFormGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12;
+}
+
+.classDetailsCheckboxRow {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin: 12px 0;
+}
+
+.classDetailsCheckboxLabel {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}

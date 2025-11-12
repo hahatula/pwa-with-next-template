@@ -1,0 +1,38 @@
+.subtitleWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.subtitleWrapper.reverse {
+    flex-direction: row-reverse;
+}
+
+.displayStyleSwitcher {
+    display: flex;
+    gap: 8px;
+}
+
+.scheduleWrapper {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    display: flex;
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
+}
+
+.daysGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.daysGrid.list {
+    grid-template-columns: 1fr;
+}

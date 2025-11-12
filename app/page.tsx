@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import styles from "./page.module.css";
 import InstallPrompt from "@/components/InstallPrompt";
 import AppButton from "@/components/AppButton";
@@ -10,16 +11,16 @@ import { useAuth } from "@/contexts/AuthProvider";
 import { redirect } from "next/navigation";
 
 export default function Home() {
+  const { user } = useAuth();
+  if (user) {
+    return redirect('/schedule');
+  }
+  
   const { hasInstallUI } = useInstallPrompt();
   const hydrated = useIsHydrated();
   const showInstallUI = hydrated ? hasInstallUI : true;
   const { t: tHome } = useI18n('home');
   const { t: tCommon } = useI18n('common');
-
-  const { user } = useAuth();
-  if (user) {
-    return redirect('/schedule');
-  }
 
   const ctasClassName = [
     styles.ctas,

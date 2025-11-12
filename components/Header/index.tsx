@@ -4,12 +4,16 @@ import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageProvider";
 import { useAuth } from "@/contexts/AuthProvider";
 import { useI18n } from "@/lib/i18n";
+import { useState } from "react";
+import Menu from "../Menu";
 
 export default function Header() {
     const { user } = useAuth();
     const { lang, toggleLanguage } = useLanguage();
     const { t } = useI18n('header');
     const nextLabel = lang === 'en' ? 'HE' : 'EN';
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
         <header className={styles.header}>
@@ -25,8 +29,9 @@ export default function Header() {
                 </a>
             </div>
             {user && <AppButton variant="gradient" onClick={() => {
-                console.log('menu clicked');
+                setIsMenuOpen(!isMenuOpen);
             }}><Image src="/menu.svg" alt="Menu" width={20} height={20} /></AppButton>}
+            {isMenuOpen && <Menu onClose={() => setIsMenuOpen(false)}/>}
         </header>
     );
 }

@@ -1,4 +1,4 @@
-.pitButton {
+.appButton {
     appearance: none;
     border-radius: 128px;
     height: 48px;
@@ -33,6 +33,13 @@
     border-color: var(--foreground);
 }
 
+.ghost {
+    background: transparent;
+    color: var(--foreground);
+    border: none;
+    padding: 0;
+}
+
 .gradient {
     background: var(--accent-gradient);
     color: var(--background);
@@ -44,13 +51,26 @@
     border-radius: 6px;
 }
 
+.activeTab {
+    border: none;
+    border-bottom: 1px solid var(--accent);
+    border-radius: 0;
+}
+
+.inactiveTab {
+    border: none;
+    border-bottom: 1px solid var(--foreground);
+    border-radius: 0;
+    opacity: 0.6;
+}
+
 .isDisabled {
     opacity: 0.6;
     pointer-events: none;
     cursor: not-allowed;
 }
 
-.pitButton:focus-visible {
+.appButton:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }

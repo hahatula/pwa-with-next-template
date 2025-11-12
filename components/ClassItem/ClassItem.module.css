@@ -1,0 +1,31 @@
+.classItem {
+    border: 1px solid var(--foreground);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--underlay);
+}
+
+.classItemHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 20px;
+}
+
+.classItemTitle {
+    font-weight: 600;
+}
+
+.classItemCoach {
+    font-size: 16px;
+    opacity: 0.6;
+}
+
+.classItemButtons {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+}

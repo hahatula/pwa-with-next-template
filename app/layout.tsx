@@ -5,6 +5,7 @@ import { AuthProvider } from '@/contexts/AuthProvider';
 import { LanguageProvider } from '@/contexts/LanguageProvider';
 import PWARegister from '@/components/system/PWARegister';
 import LanguageGate from "@/components/guards/LanguageGate";
+import ModalProvider from "@/contexts/ModalProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +20,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Template',
   description: 'Template',
-};
+  themeColor: '#ff681a'
+  };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -33,8 +35,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <LanguageProvider>
             <LanguageGate>
-              <PWARegister />
-              {children}
+              <ModalProvider>
+                <PWARegister />
+                {children}
+              </ModalProvider>
             </LanguageGate>
           </LanguageProvider>
         </AuthProvider>

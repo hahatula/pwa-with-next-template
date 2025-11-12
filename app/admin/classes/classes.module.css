@@ -1,0 +1,19 @@
+.classesListWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.classesTabs {
+    display: flex;
+    gap: 8px;
+}
+
+.classesList {
+    display: grid;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}

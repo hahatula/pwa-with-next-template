@@ -18,16 +18,12 @@
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
   gap: 32px;
   width: 100%;
   max-width: 600px;
   display: grid;
   grid-template-rows: 1fr 2fr;
 }
-
-
 
 .title {
   width: 100%;
@@ -56,6 +52,30 @@
   align-items: center;
   justify-content: center;
   align-self: self-end;
+}
+
+.logoWrap {
+  width: 120svw;
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  transform: rotate(45deg) translateX(-30%);
+  bottom: -70px;
+  border: 8px solid var(--foreground);
+  border-radius: 50%;
+}
+
+.logoWrap.second {
+  bottom: 150px;
+  transform: rotate(-27deg) translateX(48%);
+  width: 100svw;
+  opacity: 0.6;
+}
+
+.logo {
+  object-fit: contain;
 }
 
 .ctasWrapper {

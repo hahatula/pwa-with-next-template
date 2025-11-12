@@ -4,6 +4,16 @@
   --accent: #ff681a;
   --accent-red: #FF391A;
   --accent-gradient: linear-gradient(145deg, rgba(255, 104, 26, 0.8), rgba(255, 57, 26, 0.8));
+  --underlay: #262626;
+}
+
+.rdp-root.rdp-root {
+  --rdp-accent-color: var(--accent); /* Change the accent color to indigo. */
+  --rdp-accent-background-color: #f0f0f0; /* Change the accent background color. */
+}
+
+.rdp-month_caption {
+  margin: 0 10px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -59,4 +69,68 @@ body.lang-he [style*="text-align: center"],
 body.lang-he .text-center,
 body.lang-he [data-align="center"] {
   text-align: center !important;
+}
+
+.pageLayout {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100svh;
+  justify-items: center;
+  overflow: hidden;
+}
+
+.innerPageMain {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  gap: 20px;
+  padding: 20px;
+  align-items: center;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+.devider {
+  width: 100%;
+  height: 1px;
+  background: var(--foreground);
+  opacity: 0.3;
+  margin: 10px 0;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin; /* auto | thin | none */
+  scrollbar-color: var(--accent) transparent; /* thumb | track */
+}
+
+/* Chromium/WebKit (Chrome, Edge, Safari) */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 8px;
+  border: 2px solid transparent; /* creates a padded thumb */
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #ff7a3a; /* lighter than --accent */
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: #ff915f; /* pressed state */
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
