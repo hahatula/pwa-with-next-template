@@ -3,11 +3,21 @@ import { useAuth } from "@/contexts/AuthProvider";
 import AppButton from "../AppButton";
 import { useI18n } from "@/lib/i18n";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function Menu({ onClose }: { onClose: () => void }) {
     const { t: tAccount } = useI18n('account');
     const { t: tSchedule } = useI18n('schedule');
     const { isAdmin } = useAuth();
+    const pathname = usePathname();
+
+    const handleNavClick = (href: string) => ()  => {
+        if (pathname === href) {
+            onClose();
+        }
+        return;
+    }
+
     return (
         <>
             <nav className={styles.menu}>
@@ -23,12 +33,12 @@ export default function Menu({ onClose }: { onClose: () => void }) {
                 </div>
                 <AppButton variant="gradient" className={styles.menuToggle} onClick={onClose}>X</AppButton>
                 <div className={styles.menuList}>
-                    <AppButton variant="primary" href="/account/my-upcoming-classes">{tAccount('myUpcomingClasses')}</AppButton>
-                    <AppButton variant="secondary" href="/schedule">{tSchedule('schedule')}</AppButton>
-                    <AppButton variant="secondary" href="/account">{tAccount('myAccount')}</AppButton>
+                    <AppButton variant="primary" href="/account/my-upcoming-classes" onClick={handleNavClick('/account/my-upcoming-classes')}>{tAccount('myUpcomingClasses')}</AppButton>
+                    <AppButton variant="secondary" href="/schedule" onClick={handleNavClick('/schedule')}>{tSchedule('schedule')}</AppButton>
+                    <AppButton variant="secondary" href="/account" onClick={handleNavClick('/account')}>{tAccount('myAccount')}</AppButton>
                 </div>
                 {isAdmin && <ul className={styles.menuList + ' ' + styles.menuListAdmin}>
-                    <AppButton variant="primary" href="/admin">{tAccount('adminWorkspace')}</AppButton>
+                    <AppButton variant="primary" href="/admin" onClick={handleNavClick('/admin')}>{tAccount('adminWorkspace')}</AppButton>
                 </ul>}
             </nav>
         </>

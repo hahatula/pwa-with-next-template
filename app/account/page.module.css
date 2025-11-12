@@ -1,0 +1,38 @@
+.accountInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid var(--foreground);
+    border-radius: 12px;
+    padding: 16px;
+    background: var(--underlay);
+    width: 100%;
+}
+
+.accountPhoto {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.accountInfoItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ctasWrapper {
+    margin-top: auto;
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: 20px;
+    background: var(--accent-gradient);
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0px -4px 10px 5px rgba(0, 0, 0, 0.4);
+}

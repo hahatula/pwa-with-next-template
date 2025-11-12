@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import type { ClassDoc } from '@/app/admin/classes/page';
+import type { ClassDoc } from '@/lib/types';
 import styles from './Day.module.css';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageProvider';

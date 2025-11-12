@@ -5,7 +5,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import RequireAuth from '@/components/guards/RequireAuth';
 import { useAuth } from '@/contexts/AuthProvider';
-import type { ClassDoc } from '@/app/admin/classes/page';
+import type { ClassDoc } from '@/lib/types';
 import AppButton from '@/components/AppButton';
 import { useLanguage } from '@/contexts/LanguageProvider';
 import * as Avatar from '@radix-ui/react-avatar';

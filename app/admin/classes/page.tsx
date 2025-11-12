@@ -10,34 +10,7 @@ import { useModal } from '@/components/modals/useModal';
 import { useI18n } from "@/lib/i18n";
 import ClassItem from '@/components/ClassItem';
 import useHorizontalSwipe from '@/hooks/useHorizontalSwipe';
-
-// Shared types for this module
-type LocalizedText = { en: string; he: string };
-export type ClassLevel = 'Kids' | 'Beginner' | 'All Levels' | 'Advanced';
-export type ClassType = 'Gi' | 'No-Gi' | 'Open Mat' | 'MMA';
-
-export type ClassDoc = {
-    id: string;
-    title: LocalizedText;
-    coach: LocalizedText;
-    level: ClassLevel;
-    type: ClassType;
-    repeated: boolean;
-    active?: boolean;
-    // Repeated fields
-    weekday?: number; // 0-6 (Sun-Sat)
-    startDate?: string; // YYYY-MM-DD (first occurrence not earlier than this)
-    // Unique fields
-    date?: string; // YYYY-MM-DD
-    // Common time fields
-    startTime: string; // HH:MM (24h)
-    endTime: string;   // HH:MM (24h)
-    // Audit
-    createdBy?: string;
-    updatedBy?: string;
-    createdAt?: unknown;
-    updatedAt?: unknown;
-};
+import type { ClassDoc } from '@/lib/types';
 
 export default function AdminPage() {
     return (
@@ -52,7 +25,6 @@ export default function AdminPage() {
 
 function ClassesInner() {
     const { t: tClasses } = useI18n('classes');
-    const { t: tCommon } = useI18n('common');
 
     const { user } = useAuth();
     const { openModal } = useModal();
@@ -81,7 +53,7 @@ function ClassesInner() {
                 const data = await res.json();
                 if (!active) return;
                 setClasses((data.items || []) as ClassDoc[]);
-            } catch (_e) {
+            } catch {
                 if (!active) return;
                 setClasses([]);
             } finally {

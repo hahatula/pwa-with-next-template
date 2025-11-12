@@ -1,6 +1,6 @@
 'use client';
 
-import { ClassDoc } from '@/app/admin/classes/page';
+import type { ClassDoc } from '@/lib/types';
 import AppButton from '../AppButton';
 import styles from './ClassItem.module.css';
 import { useModal } from '@/components/modals/useModal';

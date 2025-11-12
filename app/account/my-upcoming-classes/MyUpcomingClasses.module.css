@@ -1,0 +1,30 @@
+.upcomingClassesList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.upcomingClassItem {
+    border: 1px solid var(--foreground);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--underlay);
+    width: 100%;
+}
+
+.ctasWrapper {
+    margin-top: auto;
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    gap: 10px;
+    text-align: center;
+    padding: 20px;
+    background: var(--accent-gradient);
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0px -4px 10px 5px rgba(0, 0, 0, 0.4);
+}

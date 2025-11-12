@@ -1,0 +1,52 @@
+'use client';
+import styles from './EnablePush.module.css';
+import { useEffect, useState } from 'react';
+import { ensureFCMToken, listenForeground } from '@/lib/firebase/push';
+import AppButton from '../AppButton';
+import { useI18n } from '@/lib/i18n';
+import { useLanguage } from '@/contexts/LanguageProvider';
+
+export default function EnablePush() {
+    const { lang } = useLanguage();
+    const { t: tAccount } = useI18n('account');
+    const { t: tCommon } = useI18n('common');
+    const [token, setToken] = useState<string | null>(null);
+    const [status, setStatus] = useState<string>('');
+
+    useEffect(() => {
+        const unsubPromise = listenForeground((p) => {
+            console.log('Foreground message:', p);
+            setStatus(`Foreground: ${p?.notification?.title ?? 'Notification'}`);
+        });
+        return () => { unsubPromise.then((unsub) => unsub()); };
+    }, []);
+
+    const enable = async () => {
+        setStatus('Requesting permission...');
+        const t = await ensureFCMToken();
+        setToken(t);
+        if (!t) { setStatus('Permission denied or unsupported.'); return; }
+        setStatus('Token acquired.');
+    };
+
+    const sendTest = async () => {
+        if (!token) return;
+        setStatus('Sending test...');
+        const resp = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }) });
+        setStatus(resp.ok ? 'Sent!' : 'Failed to send');
+    };
+
+    return (
+        <section className={`${styles.enablePush} ${lang === 'he' ? styles.reverse : ''}`}>
+            <h3>{tAccount('pushNotifications')}</h3>
+            <AppButton onClick={enable}  className={styles.enableButton}>{tCommon('enable')}</AppButton>
+            {token && (
+                <>
+                    <p style={{ fontSize: 12, wordBreak: 'break-all' }}>Token: {token}</p>
+                    <AppButton onClick={sendTest}>Send Test Notification</AppButton>
+                </>
+            )}
+            {status && <p>{status}</p>}
+        </section>
+    );
+}   

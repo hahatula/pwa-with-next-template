@@ -2,10 +2,9 @@
 import { useLanguage } from '@/contexts/LanguageProvider';
 import { useI18n } from '@/lib/i18n';
 import styles from './Day.module.css';
-import { ClassDoc } from '@/app/admin/classes/page';
+import type { ClassDoc } from '@/lib/types';
 import DayClassItem from './DayClassItem';
 import { useMemo } from 'react';
-import AdvancedIcon from '../icons/level/Advansed';
 
 type DayProps = {
     day: Date;

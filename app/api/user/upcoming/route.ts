@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase/admin';
 import { toYmd } from '@/lib/utils/date';
+import type { ClassSnapshot, FirestoreDocData } from '@/lib/types';
+import { getBilingualText } from '@/lib/utils/helpers';
 
 export const runtime = 'nodejs';
 
@@ -29,19 +31,19 @@ export async function GET(req: NextRequest) {
             .get();
 
         const items = await Promise.all(snap.docs.map(async (d) => {
-            const r = d.data() as { classId: string; date: string; classSnapshot?: any };
+            const r = d.data() as { classId: string; date: string; classSnapshot?: ClassSnapshot };
             // Prefer snapshot stored on registration; fallback to live class doc
             let snapshot = r.classSnapshot;
             if (!snapshot) {
                 const clsSnap = await adminDb.collection('classes').doc(r.classId).get();
-                const cls = clsSnap.data() as any;
+                const cls = clsSnap.data() as FirestoreDocData | undefined;
                 snapshot = cls ? {
-                    title: cls.title || { en: '', he: '' },
-                    coach: cls.coach || { en: '', he: '' },
-                    startTime: cls.startTime || '',
-                    endTime: cls.endTime || '',
-                    level: cls.level,
-                    type: cls.type,
+                    title: getBilingualText(cls.title),
+                    coach: getBilingualText(cls.coach),
+                    startTime: (cls.startTime as string | undefined) || '',
+                    endTime: (cls.endTime as string | undefined) || '',
+                    level: cls.level as string | undefined,
+                    type: cls.type as string | undefined,
                 } : undefined;
             }
             return { classId: r.classId, date: r.date, classSnapshot: snapshot };
