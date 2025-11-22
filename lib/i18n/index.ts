@@ -9,6 +9,7 @@ import classes from './classes';
 import week from './week';
 import schedule from './schedule';
 import account from './account';
+import notFound from './notFound';
 
 type SideBySide = Record<string, { en: string; he?: string }>;
 
@@ -21,6 +22,7 @@ const MODULES: Record<Namespace, SideBySide> = {
     week,
     schedule,
     account,
+    notFound,
     notifications: {},
 };
 

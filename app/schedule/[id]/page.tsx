@@ -14,6 +14,7 @@ import Loader from '@/components/Loader';
 import styles from './page.module.css';
 import { getLocalizedLevel, getLocalizedType, getClassTypeIcon, getLevelIcon, } from '@/lib/i18n/classFormat';
 import InfoTag from '@/components/InfoTag';
+import ActionFooter from '@/components/ActionFooter';
 
 
 type Attendee = { uid: string; name?: string; photoURL?: string };
@@ -38,6 +39,7 @@ function ScheduleClassInner() {
     const { t: tCommon } = useI18n('common');
     const { t: tClasses } = useI18n('classes');
     const { t: tWeek } = useI18n('week');
+    const { t: tAccount } = useI18n('account');
     const classId = params?.id as string;
     const date = searchParams.get('date') || '';
 
@@ -147,62 +149,68 @@ function ScheduleClassInner() {
     const TypeIcon = getClassTypeIcon(classEntity?.type ?? 'Gi');
 
     return (
-        <main className='innerPageMain'>
-            <div className={styles.classInfo}>
+        <>
+            <main className='innerPageMain'>
+                <div className={styles.classInfo}>
 
-                <div className={styles.classInfoTime}>
-                    <p>{date} ({tWeek(weekdayKey)})</p>
-                    <p>{classEntity?.startTime} - {classEntity?.endTime}</p>
-                </div>
+                    <div className={styles.classInfoTime}>
+                        <p>{date} ({tWeek(weekdayKey)})</p>
+                        <p>{classEntity?.startTime} - {classEntity?.endTime}</p>
+                    </div>
 
-                <div className={styles.infoTags}>
-                    <InfoTag icon={TypeIcon && <TypeIcon />} label={localizedType} /> ·{' '}
-                    <InfoTag icon={LevelIcon && <LevelIcon />} label={localizedLevel} />
-                </div>
-                <div className={styles.classItemHeader}>
-                    <h1 className={styles.classItemTitle}>
-                        {lang === 'he' ? classEntity?.title.he : classEntity?.title.en} {' '}
-                        <span className={styles.classItemCoach}>
-                            ({tClasses('coach')}: {lang === 'he' ? classEntity?.coach.he : classEntity?.coach.en})
-                        </span>
-                    </h1>
-                </div>
+                    <div className={styles.infoTags}>
+                        <InfoTag icon={TypeIcon && <TypeIcon />} label={localizedType} /> ·{' '}
+                        <InfoTag icon={LevelIcon && <LevelIcon />} label={localizedLevel} />
+                    </div>
+                    <div className={styles.classItemHeader}>
+                        <h1 className={styles.classItemTitle}>
+                            {lang === 'he' ? classEntity?.title.he : classEntity?.title.en} {' '}
+                            <span className={styles.classItemCoach}>
+                                ({tClasses('coach')}: {lang === 'he' ? classEntity?.coach.he : classEntity?.coach.en})
+                            </span>
+                        </h1>
+                    </div>
 
-                <div className={styles.classInfoButtons}>
-                    {!isBooked ? (
-                        <AppButton type="button" onClick={handleSignUp} disabled={saving}>{tCommon('signup')}</AppButton>
-                    ) : (
+                    <div className={styles.classInfoButtons}>
+                        {!isBooked ? (
+                            <AppButton type="button" onClick={handleSignUp} disabled={saving}>{tCommon('signup')}</AppButton>
+                        ) : (
+                            <>
+                                <p>{tSchedule('youAreSignedUp')}</p>
+                                <AppButton type="button" variant="secondary" onClick={handleCancel} disabled={saving}>{tCommon('cancel')}</AppButton>
+                            </>
+                        )}
+                    </div>
+                </div>
+                <section className={styles.participantsSection}>
+
+                    {loading && <Loader center="screen" />}
+                    {!loading && attendees && attendees.length === 0 && <p>{tSchedule('noParticipantsYet')}</p>}
+                    {!loading && attendees && attendees.length > 0 && (
                         <>
-                            <p>{tSchedule('youAreSignedUp')}</p>
-                            <AppButton type="button" variant="secondary" onClick={handleCancel} disabled={saving}>{tCommon('cancel')}</AppButton>
+                            <h2>{tSchedule('participants')}</h2>
+                            <ul className={styles.participantsList}>
+                                {attendees.map((a) => (
+                                    <li key={a.uid} className={styles.participantItem}>
+                                        <Avatar.Root className={styles.participantAvatar}>
+                                            <Avatar.Image src={a.photoURL} alt={a.name || a.uid} className={styles.participantImage} />
+                                            <Avatar.Fallback delayMs={200} className={styles.participantFallback}>
+                                                {(a.name || a.uid).slice(0, 1).toUpperCase()}
+                                            </Avatar.Fallback>
+                                        </Avatar.Root>
+                                        <span>{a.name || a.uid}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </>
                     )}
-                </div>
-            </div>
-            <section className={styles.participantsSection}>
-
-                {loading && <Loader center="screen" />}
-                {!loading && attendees && attendees.length === 0 && <p>{tSchedule('noParticipantsYet')}</p>}
-                {!loading && attendees && attendees.length > 0 && (
-                    <>
-                        <h2>{tSchedule('participants')}</h2>
-                        <ul className={styles.participantsList}>
-                            {attendees.map((a) => (
-                                <li key={a.uid} className={styles.participantItem}>
-                                    <Avatar.Root className={styles.participantAvatar}>
-                                        <Avatar.Image src={a.photoURL} alt={a.name || a.uid} className={styles.participantImage} />
-                                        <Avatar.Fallback delayMs={200} className={styles.participantFallback}>
-                                            {(a.name || a.uid).slice(0, 1).toUpperCase()}
-                                        </Avatar.Fallback>
-                                    </Avatar.Root>
-                                    <span>{a.name || a.uid}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </>
-                )}
-            </section>
-        </main>
+                </section>
+            </main>
+            <ActionFooter direction="row">
+                <AppButton variant="secondary" href="/account">{tAccount('myAccount')}</AppButton>
+                <AppButton variant="secondary" href="/schedule">{tSchedule('schedule')}</AppButton>
+            </ActionFooter>
+        </>
     );
 }
 

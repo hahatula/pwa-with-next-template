@@ -6,6 +6,8 @@ import { LanguageProvider } from '@/contexts/LanguageProvider';
 import PWARegister from '@/components/system/PWARegister';
 import LanguageGate from "@/components/guards/LanguageGate";
 import ModalProvider from "@/contexts/ModalProvider";
+import { DisplayPreferencesProvider } from "@/contexts/DisplayPreferencesProvider";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,28 +22,31 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Template',
   description: 'Template',
-  themeColor: '#ff681a'
   };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/* <script src="https://accounts.google.com/gsi/client" async defer></script> */}
         <link rel="manifest" href="/manifest.webmanifest" />
         <meta name="theme-color" content="#ff681a" />
-        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AuthProvider>
           <LanguageProvider>
             <LanguageGate>
-              <ModalProvider>
-                <PWARegister />
-                {children}
-              </ModalProvider>
+              <DisplayPreferencesProvider>
+                <ModalProvider>
+                  <PWARegister />
+                  {children}
+                </ModalProvider>
+              </DisplayPreferencesProvider>
             </LanguageGate>
           </LanguageProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );

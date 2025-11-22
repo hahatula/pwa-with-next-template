@@ -39,6 +39,7 @@ export function useWeeklyClasses(weekOffset: 0 | 1 = 0): WeeklyClasses {
                 if (!active) return;
                 setClasses((data.items || []) as ClassDoc[]);
             } catch (e) {
+                console.error('Failed to load classes', e);
                 if (!active) return;
                 setClasses([]);
                 setError('Failed to load classes');
@@ -88,7 +89,7 @@ export function useWeeklyClasses(weekOffset: 0 | 1 = 0): WeeklyClasses {
 
         // Determine if Saturday should be included
         const saturdayYmd = toYmd(saturday);
-        let saturdayClasses: ClassDoc[] = [];
+        const saturdayClasses: ClassDoc[] = [];
         if (classes && classes.length > 0) {
             for (const c of classes) {
                 if (c.active === false) continue;

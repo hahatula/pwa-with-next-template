@@ -44,12 +44,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         if (ready) {
             document.documentElement.setAttribute('lang', lang);
         }
-        // document.documentElement.setAttribute('dir', getDirection(lang));
         // Toggle a body class to control text alignment globally without changing direction
         if (document.body) {
             document.body.classList.toggle('lang-he', lang === 'he');
         }
-    }, [lang]);
+    }, [lang, ready]);
 
     // Initialize language from localStorage immediately on mount (fast path)
     useEffect(() => {

@@ -1,0 +1,72 @@
+.editProfileForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.uploadProfilePicture {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.avatarLabel {
+    cursor: pointer;
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: opacity 0.2s;
+    border: 2px solid var(--background);
+    box-shadow: 0 0 0 2px var(--foreground);
+}
+
+.avatarLabel:active {
+    opacity: 0.8;
+}
+
+.fileInput {
+    display: none;
+}
+
+.avatarRoot {
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    background: var(--underlay);
+}
+
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatarFallback {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    font-size: 40px;
+    font-weight: 600;
+    background: var(--underlay);
+    color: var(--foreground);
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 11px;
+    padding: 6px 0 4px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    pointer-events: none;
+}

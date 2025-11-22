@@ -1,0 +1,125 @@
+.page {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    justify-items: center;
+    min-height: 100svh;
+    overflow: hidden;
+    position: fixed;
+    inset: 0;
+}
+
+.main {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 20px;
+    gap: 20px;
+    align-items: center;
+    text-align: center;
+    background: #17171775;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.errorCode {
+    font-size: 120px;
+    font-weight: bold;
+    color: var(--pitbull);
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(255, 104, 26, 0.3);
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--foreground);
+    margin: 0;
+}
+
+.description {
+    font-size: 16px;
+    color: var(--foreground);
+    opacity: 0.8;
+    max-width: 400px;
+    line-height: 1.6;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.logoWrap {
+    width: 120svw;
+    aspect-ratio: 1 / 1;
+    max-width: 480px;
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    transform: rotate(45deg) translateX(-30%);
+    bottom: -70px;
+    border: 8px solid var(--foreground);
+    border-radius: 50%;
+    opacity: 0.6;
+}
+
+.logoWrap.second {
+    bottom: 150px;
+    transform: rotate(-27deg) translateX(48%);
+    width: 100svw;
+    opacity: 0.4;
+}
+
+.logo {
+    object-fit: contain;
+}
+
+@media (width > 600px) {
+    .logoWrap {
+        transform: none;
+        top: 30svh;
+        bottom: auto;
+    }
+
+    .logoWrap.second {
+        display: none;
+    }
+
+    .errorCode {
+        font-size: 160px;
+    }
+
+    .title {
+        font-size: 32px;
+    }
+
+    .description {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 400px) {
+    .errorCode {
+        font-size: 80px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .content {
+        padding: 30px 15px;
+    }
+}

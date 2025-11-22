@@ -7,8 +7,7 @@ type Registration = {
     classId: string;
     date: string; // YYYY-MM-DD occurrence
     uid: string; // registered user
-    name?: string; // snapshot of user name at time of action
-    photoURL?: string; // snapshot of user photo at time of action
+    email: string; // snapshot of user email at time of action
     createdAt: Date;
     createdBy: string; // actor who created the registration
     createdByName?: string;
@@ -37,21 +36,13 @@ async function requireActor(req: NextRequest) {
     return { uid, name, isAdmin } as const;
 }
 
-async function getUserNameSnapshot(uid: string): Promise<string | undefined> {
+async function getUserEmail(uid: string): Promise<string | undefined> {
     const snap = await adminDb.collection('users').doc(uid).get();
-    const firestoreName = (snap.data()?.name as string | undefined);
-    if (firestoreName) return firestoreName;
-    // Fallback to Firebase Auth profile if Firestore name is missing
+    const firestoreEmail = (snap.data()?.email as string | undefined);
+    if (firestoreEmail) return firestoreEmail;
+    // Fallback to Firebase Auth profile if Firestore email is missing
     const authUser = await adminAuth.getUser(uid).catch(() => null);
-    return authUser?.displayName || authUser?.email || undefined;
-}
-
-async function getUserPhotoSnapshot(uid: string): Promise<string | undefined> {
-    const snap = await adminDb.collection('users').doc(uid).get();
-    const firestorePhoto = (snap.data()?.photoURL as string | undefined);
-    if (firestorePhoto) return firestorePhoto;
-    const authUser = await adminAuth.getUser(uid).catch(() => null);
-    return authUser?.photoURL || undefined;
+    return authUser?.email || undefined;
 }
 
 function validateDateParam(date: string | null): date is string {
@@ -76,9 +67,37 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
             .where('date', '==', date)
             .get();
 
-        const attendees = qSnap.docs.map((d) => {
+        const uids = [...new Set(qSnap.docs.map(d => d.data().uid as string))];
+
+        // Batch fetch all user documents (Firestore allows up to 10 per batch)
+        const userDataMap = new Map<string, { name: string; photoURL?: string }>();
+
+        // Split into batches of 10 (Firestore limit)
+        for (let i = 0; i < uids.length; i += 10) {
+            const batch = uids.slice(i, i + 10);
+            const userDocs = await Promise.all(
+                batch.map(uid => adminDb.collection('users').doc(uid).get())
+            );
+
+            for (let j = 0; j < userDocs.length; j++) {
+                const uid = batch[j];
+                const userData = userDocs[j].data();
+                const name = userData?.name || userData?.displayName || 'User';
+                const photoURL = userData?.customPhotoURL || userData?.photoURL;
+                userDataMap.set(uid, { name, photoURL });
+            }
+        }
+
+        // Map registrations to attendees with user data
+        const attendees = qSnap.docs.map(d => {
             const data = d.data() as Registration;
-            return { uid: data.uid, name: data.name || 'User', photoURL: data.photoURL, confirmedAttendance: !!data.confirmedAttendance };
+            const userData = userDataMap.get(data.uid) || { name: data.email || 'User' };
+            return {
+                uid: data.uid,
+                name: userData.name,
+                photoURL: userData.photoURL,
+                confirmedAttendance: !!data.confirmedAttendance
+            };
         });
 
         return NextResponse.json({ attendees });
@@ -105,8 +124,10 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
-        const nameSnapshot = (await getUserNameSnapshot(targetUid)) || undefined;
-        const photoSnapshot = (await getUserPhotoSnapshot(targetUid)) || undefined;
+        const emailSnapshot = await getUserEmail(targetUid);
+        if (!emailSnapshot) {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        }
         const docId = `${id}_${body.date}_${targetUid}`;
         const ref = adminDb.collection('classRegistrations').doc(docId);
         const existing = await ref.get();
@@ -130,8 +151,7 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
             classId: id,
             date: body.date!,
             uid: targetUid,
-            name: nameSnapshot,
-            photoURL: photoSnapshot,
+            email: emailSnapshot,
             createdBy: actorUid,
             createdByName: actorName,
             createdAt: new Date(),

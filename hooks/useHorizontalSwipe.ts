@@ -29,9 +29,9 @@ export default function useHorizontalSwipe<T extends HTMLElement = HTMLDivElemen
 
         if (absDx > threshold && absDx > absDy) {
             if (dx < 0) {
-                onSwipeLeft && onSwipeLeft();
+                if (onSwipeLeft) onSwipeLeft();
             } else if (dx > 0) {
-                onSwipeRight && onSwipeRight();
+                if (onSwipeRight) onSwipeRight();
             }
         }
 

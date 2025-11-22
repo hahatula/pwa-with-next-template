@@ -4,14 +4,14 @@ import { useI18n } from '@/lib/i18n';
 import styles from './Day.module.css';
 import type { ClassDoc } from '@/lib/types';
 import DayClassItem from './DayClassItem';
-import { useMemo } from 'react';
+import { useMemo, forwardRef } from 'react';
 
 type DayProps = {
     day: Date;
     classes: ClassDoc[];
 };
 
-export default function Day({ day, classes = [] }: DayProps) {
+const Day = forwardRef<HTMLDivElement, DayProps>(({ day, classes = [] }, ref) => {
     const { lang } = useLanguage();
     const { t: tClasses } = useI18n('classes');
     const locale = lang === 'he' ? 'he-IL' : 'en-US';
@@ -39,7 +39,7 @@ export default function Day({ day, classes = [] }: DayProps) {
     const containerStyle = isSaturday ? { gridColumn: '1 / -1' } : undefined;
 
     return (
-        <div className={className} style={containerStyle}>
+        <div className={className} style={containerStyle} ref={ref}>
             <div className={styles.dayHeader}>
                 <div className={styles.weekday}>{weekday}</div>
                 <div className={styles.date}>{dateStr}</div>
@@ -55,4 +55,8 @@ export default function Day({ day, classes = [] }: DayProps) {
             )}
         </div>
     );
-}
+});
+
+Day.displayName = 'Day';
+
+export default Day;

@@ -31,6 +31,14 @@ const common = {
         en: 'Save',
         he: 'שמור'
     },
+    saving: {
+        en: 'Saving...',
+        he: '...שומר'
+    },
+    saveChanges: {
+        en: 'Save changes',
+        he: 'שמור השינויים'
+    },
     cancel: {
         en: 'Cancel',
         he: 'בטל'
@@ -54,6 +62,18 @@ const common = {
     disable: {
         en: 'Disable',
         he: 'השבת'
+    },
+    loading: {
+        en: 'Loading...',
+        he: '...טוען'
+    },
+    uploading: {
+        en: 'Uploading...',
+        he: '...מעלה'
+    },
+    back: {
+        en: 'Back',
+        he: 'חזור'
     },
 } as const;
 

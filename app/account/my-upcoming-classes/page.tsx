@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageProvider';
 import AppButton from '@/components/AppButton';
 import { useI18n } from '@/lib/i18n';
+import ActionFooter from '@/components/ActionFooter';
 
 type UpcomingItem = {
     classId: string;
@@ -40,6 +41,7 @@ function toReadable(dateStr: string, locale: string) {
 function MyClassesInner() {
     const { t: tAccount } = useI18n('account');
     const { t: tSchedule } = useI18n('schedule');
+    const { t: tCommon } = useI18n('common');
     const { user } = useAuth();
     const { lang } = useLanguage();
     const locale = lang === 'he' ? 'he-IL' : 'en-US';
@@ -68,11 +70,10 @@ function MyClassesInner() {
 
     return (
         <>
-
             <main className='innerPageMain'>
                 <h1>{tAccount('myUpcomingClasses')}</h1>
-                {loading && <p>Loading...</p>}
-                {!loading && items && items.length === 0 && <p>No upcoming classes</p>}
+                {loading && <p>{tCommon('loading')}</p>}
+                {!loading && items && items.length === 0 && <p>{tAccount('noUpcomingClasses')}</p>}
                 {!loading && items && items.length > 0 && (
                     <ul className={styles.upcomingClassesList}>
                         {items.map((it) => (
@@ -89,10 +90,10 @@ function MyClassesInner() {
                     </ul>
                 )}
             </main>
-            <footer className={styles.ctasWrapper}>
-                <AppButton href="/account">{tAccount('myAccount')}</AppButton>
-                <AppButton href="/schedule">{tSchedule('schedule')}</AppButton>
-            </footer>
+            <ActionFooter direction="row">
+                <AppButton variant="secondary" href="/account">{tAccount('myAccount')}</AppButton>
+                <AppButton variant="secondary" href="/schedule">{tSchedule('schedule')}</AppButton>
+            </ActionFooter>
         </>
     );
 }

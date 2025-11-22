@@ -6,7 +6,7 @@ import { ModalContext, ModalId, ModalRegistry } from '../components/modals/useMo
 import ConfirmDialog from '../components/modals/dialogs/ConfirmDialog';
 import EditClassModal from '../components/modals/dialogs/EditClassModal';
 
-type ActiveModal = { id: ModalId; props: any } | null;
+type ActiveModal = { id: ModalId; props: ModalRegistry[ModalId] } | null;
 
 export default function ModalProvider({ children }: { children: React.ReactNode }) {
     const [active, setActive] = React.useState<ActiveModal>(null);
@@ -25,10 +25,10 @@ export default function ModalProvider({ children }: { children: React.ReactNode 
             {active && (
                 <BaseModal open={true} onOpenChange={(o) => (!o ? closeModal() : null)}>
                     {active.id === 'confirm' && (
-                        <ConfirmDialog {...active.props} onClose={closeModal} />
+                        <ConfirmDialog {...(active.props as ModalRegistry['confirm'])} onClose={closeModal} />
                     )}
                     {active.id === 'editClass' && (
-                        <EditClassModal {...active.props} onClose={closeModal} />
+                        <EditClassModal {...(active.props as ModalRegistry['editClass'])} onClose={closeModal} />
                     )}
                 </BaseModal>
             )}

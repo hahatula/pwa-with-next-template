@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import styles from "./page.module.css";
 import InstallPrompt from "@/components/InstallPrompt";
 import AppButton from "@/components/AppButton";
@@ -8,6 +9,7 @@ import useIsHydrated from "@/hooks/useIsHydrated";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/contexts/AuthProvider";
 import { redirect } from "next/navigation";
+import ActionFooter from "@/components/ActionFooter";
 
 export default function Home() {
   const { user } = useAuth();
@@ -45,13 +47,13 @@ export default function Home() {
           </div>
 
           <div className={styles.bottomSection}>
-            <div className={styles.ctasWrapper}>
+            <ActionFooter>
               <InstallPrompt />
               <div className={ctasClassName}>
                 <AppButton variant="secondary" href="/register">{tCommon('signup')}</AppButton>
                 <AppButton variant={showInstallUI ? "secondary" : "primary"} href="/login">{tCommon('login')}</AppButton>
               </div>
-            </div>
+            </ActionFooter>
           </div>
         </>
       </main>
